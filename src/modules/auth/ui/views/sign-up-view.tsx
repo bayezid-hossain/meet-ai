@@ -20,6 +20,8 @@ import Link from "next/link";
 import { useRouter } from "next/navigation";
 import { useState } from "react";
 import { authClient } from "@/lib/auth-client";
+import { FaGithub, FaGoogle } from "react-icons/fa";
+import SocialButtons from "../components/social-buttons";
 
 const formSchema = z
   .object({
@@ -75,6 +77,7 @@ export const SignUpView = () => {
       }
     );
   };
+
   return (
     <div className="flex flex-col gap-6">
       <Card className="overflow-hidden p-0">
@@ -189,24 +192,11 @@ export const SignUpView = () => {
                     Or continue with
                   </span>
                 </div>
-                <div className="grid grid-cols-2 gap-4">
-                  <Button
-                    variant={"outline"}
-                    disabled={pending}
-                    type="button"
-                    className="w-full"
-                  >
-                    Google
-                  </Button>
-                  <Button
-                    variant={"outline"}
-                    type="button"
-                    className="w-full"
-                    disabled={pending}
-                  >
-                    Github
-                  </Button>
-                </div>
+                <SocialButtons
+                  setPending={setPending}
+                  setError={setError}
+                  pending={pending}
+                />
                 <div className="text-center text-sm">
                   Already have an account?{" "}
                   <Link

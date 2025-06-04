@@ -7,6 +7,7 @@ import { Button } from "@/components/ui/button";
 import { Card, CardContent } from "@/components/ui/card";
 import { Alert, AlertTitle } from "@/components/ui/alert";
 import { OctagonAlertIcon } from "lucide-react";
+import { FaGithub, FaGoogle } from "react-icons/fa";
 import {
   Form,
   FormControl,
@@ -20,6 +21,7 @@ import Link from "next/link";
 import { useRouter } from "next/navigation";
 import { useState } from "react";
 import { authClient } from "@/lib/auth-client";
+import SocialButtons from "../components/social-buttons";
 
 const formSchema = z.object({
   email: z.string().email(),
@@ -45,10 +47,30 @@ export const SignInView = () => {
       {
         email: data.email,
         password: data.password,
+        callbackURL: "/",
       },
       {
         onSuccess: () => {
           router.push("/");
+          setPending(false);
+        },
+        onError: ({ error }) => {
+          setPending(false);
+          setError(error.message);
+        },
+      }
+    );
+  };
+  const onSocial = (provider: "google" | "github") => {
+    setError(null);
+    setPending(true);
+    authClient.signIn.social(
+      {
+        provider: provider,
+        callbackURL: "/",
+      },
+      {
+        onSuccess: () => {
           setPending(false);
         },
         onError: ({ error }) => {
@@ -132,24 +154,11 @@ export const SignInView = () => {
                     Or continue with
                   </span>
                 </div>
-                <div className="grid grid-cols-2 gap-4">
-                  <Button
-                    variant={"outline"}
-                    disabled={pending}
-                    type="button"
-                    className="w-full"
-                  >
-                    Google
-                  </Button>
-                  <Button
-                    variant={"outline"}
-                    type="button"
-                    className="w-full"
-                    disabled={pending}
-                  >
-                    Github
-                  </Button>
-                </div>
+                <SocialButtons
+                  setPending={setPending}
+                  setError={setError}
+                  pending={pending}
+                />
                 <div className="text-center text-sm">
                   Don&apos;t have an account?{" "}
                   <Link

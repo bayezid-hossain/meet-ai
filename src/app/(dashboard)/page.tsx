@@ -6,9 +6,6 @@ import { redirect } from "next/navigation";
 import React from "react";
 
 const page = async () => {
-  const greeting = await caller.hello({
-    text: "bayezid server",
-  });
   const session = await auth.api.getSession({
     headers: await headers(),
   });
@@ -16,7 +13,6 @@ const page = async () => {
   if (!session) {
     redirect("/sign-in");
   }
-  return <p>{greeting.greeting}</p>;
   return <HomeView />;
 };
 

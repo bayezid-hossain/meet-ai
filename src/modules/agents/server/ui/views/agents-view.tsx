@@ -2,6 +2,8 @@
 
 import ErrorState from "@/components/error-state";
 import LoadingState from "@/components/loading-state";
+import ResponsiveDialog from "@/components/responsive-dialog";
+import { Button } from "@/components/ui/button";
 import { useTRPC } from "@/trpc/client";
 import {
   useQueries,
@@ -15,7 +17,19 @@ export const AgentsView = () => {
     trpc.agents.getMany.queryOptions()
   );
 
-  return <div>{JSON.stringify(data, null, 2)}</div>;
+  return (
+    <div>
+      {/* <ResponsiveDialog
+        title="Responsive test"
+        description="Responsive description"
+        open
+        onOpenChange={() => {}}
+      >
+        <Button>Some action</Button>
+      </ResponsiveDialog> */}
+      {JSON.stringify(data, null, 2)}
+    </div>
+  );
 };
 
 export const AgentsViewLoading = () => {

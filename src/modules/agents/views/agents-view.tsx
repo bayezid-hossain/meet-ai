@@ -8,11 +8,14 @@ import { DataTable } from "../server/ui/components/data-table";
 import { columns } from "../server/ui/components/columns";
 import { AgentGetOne } from "../types";
 import EmptyState from "@/components/empty-state";
+import { useAgentsFilters } from "../hooks/use-agents-filters";
+import DataPagination from "../server/ui/components/data-pagination";
 
 export const AgentsView = () => {
+  const [filters, setFilters] = useAgentsFilters();
   const trpc = useTRPC();
   const { data } = useSuspenseQuery(
-    trpc.agents.getMany.queryOptions()
+    trpc.agents.getMany.queryOptions({ ...filters })
   );
 
   return (
@@ -26,8 +29,13 @@ export const AgentsView = () => {
         <Button>Some action</Button>
       </ResponsiveDialog> */}
       {/* {JSON.stringify(data, null, 2)} */}
-      <DataTable data={data} columns={columns} />
-      {data.length === 0 && (
+      <DataTable data={data.items} columns={columns} />
+      <DataPagination
+        page={filters.page}
+        totalPages={data.totalPages}
+        onPageChange={(page) => setFilters({ page })}
+      />
+      {data.items.length === 0 && (
         <EmptyState
           title="Create your first agent"
           description="Create an agent to join your meetings. Each agent will follow your instructions and can interact with participants during the call."

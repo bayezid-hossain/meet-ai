@@ -50,8 +50,8 @@ export const columns: ColumnDef<AgentGetOne>[] = [
         <VideoIcon className="text-blue-700" />
         {row.original.meetingCount}
         {row.original.meetingCount == 1
-          ? "meeting"
-          : "meetings"}
+          ? " meeting"
+          : " meetings"}
       </Badge>
     ),
   },
